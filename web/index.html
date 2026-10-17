@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>NAS 相册 · ZECTRIX</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="5" y="7" width="23" height="19" rx="3"/><path d="m7 22 7-7 4 4 3-3 5 6M9 4h14"/><circle cx="22" cy="12" r="1.5"/></svg></div>
+      <div class="brand"><span class="eyebrow">ZECTRIX · LOCAL APPS</span><h1>NAS 相册</h1></div>
+      <span id="connectionBadge" class="status-badge">正在连接</span>
+    </header>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div id="errorNotice" class="notice error" role="alert" hidden></div>
+
+    <main>
+      <section class="album-panel" aria-labelledby="albumHeading">
+        <div class="section-heading"><div><p class="eyebrow">一张照片，一段时光</p><h2 id="albumHeading">正在显示</h2></div><span class="mode-label">十六灰阶 · 铺满</span></div>
+        <div class="preview-frame">
+          <img id="photoPreview" alt="当前照片预览" width="400" height="300" hidden>
+          <div id="previewEmpty" class="preview-empty">
+            <svg viewBox="0 0 52 40" fill="none" aria-hidden="true"><rect x="1" y="1" width="50" height="38" rx="4"/><path d="m3 32 15-15 10 10 7-7 14 13"/><circle cx="38" cy="11" r="3"/></svg>
+            <p id="emptyMessage">选择照片文件夹，开始你的相册。</p>
+          </div>
+        </div>
+        <div class="photo-caption"><p id="currentName">等待第一张照片</p><span id="captureDate">拍摄日期 · 右下角</span></div>
+        <div class="playback-controls" aria-label="照片控制">
+          <button id="previousButton" class="button secondary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m12 5-5 5 5 5"/></svg>上一张</button>
+          <button id="pauseButton" class="button secondary pause-button" type="button">暂停轮播</button>
+          <button id="nextButton" class="button primary" type="button">随机下一张<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m8 5 5 5-5 5"/></svg></button>
+        </div>
+        <p id="playbackHint" class="playback-hint">设备上键回看，下键随机换图，确认键暂停或继续。</p>
+        <div class="album-facts" aria-label="相册状态">
+          <div><span>已索引照片</span><strong id="catalogCount">—</strong></div>
+          <div><span>已准备小图</span><strong id="preparedCount">—</strong></div>
+          <div><span>下次换图</span><strong id="nextChange">—</strong></div>
+        </div>
+      </section>
+
+      <section class="settings-panel" aria-labelledby="settingsHeading">
+        <div class="section-heading"><div><p class="eyebrow">按你的节奏</p><h2 id="settingsHeading">相册设置</h2></div><span id="saveState" class="quiet-label"></span></div>
+        <form id="settingsForm">
+          <div class="field"><label for="photoRoot">照片文件夹</label><input id="photoRoot" name="photo_root" type="text" spellcheck="false" autocomplete="off" placeholder="选择已挂载到此电脑的 NAS 文件夹" required><p class="field-help">先在访达中连接 NAS，再填入本机可访问的文件夹路径。</p></div>
+          <div class="field"><label for="cacheDir">小图缓存文件夹</label><input id="cacheDir" name="cache_dir" type="text" spellcheck="false" autocomplete="off" placeholder="小图缓存的本机绝对路径" required><p class="field-help">投送成功后保存 400×300 小图，原图继续留在 NAS。</p></div>
+          <div class="setting-row"><div><label for="autoplay">自动轮播</label><p class="field-help">关闭后，仍可按键随机切换。</p></div><label class="switch"><input id="autoplay" name="autoplay" type="checkbox" checked><span class="switch-track" aria-hidden="true"></span><span class="sr-only">开启自动轮播</span></label></div>
+          <div class="field interval-field"><label for="intervalMinutes">换图间隔</label><div class="number-with-unit"><input id="intervalMinutes" type="number" min="1" max="1440" step="1" value="5" required><span>分钟</span></div></div>
+          <details class="advanced-settings"><summary>缓存与预备设置</summary><div class="advanced-fields"><div class="field"><label for="cacheLimit">缓存上限</label><div class="number-with-unit"><input id="cacheLimit" type="number" min="10" max="2048" step="1" value="200" required><span>MB</span></div><p class="field-help">到达上限后，自动清理较久未使用的小图。</p></div><div class="field"><label for="prefetchFrames">提前准备</label><div class="number-with-unit"><input id="prefetchFrames" type="number" min="1" max="12" step="1" value="6" required><span>张</span></div><p class="field-help">后台准备小图，让下次翻页少一点等待。</p></div></div></details>
+          <div class="settings-actions"><button id="saveButton" class="button primary" type="submit">保存设置</button><button id="rescanButton" class="text-button" type="button">重新扫描照片</button></div>
+        </form>
+        <div class="cache-summary"><span class="cache-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5h6l2 2h6v9H3zM3 5V3h5l2 2"/></svg></span><div><strong id="cacheSummary">小图缓存</strong><p id="cacheUsage">只缓存小尺寸照片。</p></div></div>
+      </section>
+    </main>
+    <footer><p>相机照片 · 本地人像筛选 · 拍摄日期</p><span id="appVersion">ZECTRIX NAS Gallery</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

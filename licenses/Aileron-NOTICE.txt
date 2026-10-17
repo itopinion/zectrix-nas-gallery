@@ -1,0 +1,12 @@
+Aileron Regular
+
+The date stamp uses the limited-character-set Aileron Regular font embedded
+by Pillow's ImageFont.load_default implementation.
+
+Font author and upstream permissions: DOT COLON
+https://dotcolon.net/fonts/aileron/
+
+The author's license statement is: "Aileron is No Rights Reserved."
+The upstream page permits use, modification and redistribution, and provides
+the font without warranty. This notice records the upstream permission;
+it does not relicense the font under the application's MIT license.

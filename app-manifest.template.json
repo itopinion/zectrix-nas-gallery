@@ -1,0 +1,11 @@
+{
+  "id": "zectrix-nas-gallery",
+  "name": "NAS 相册",
+  "version": "0.1.0",
+  "api_version": 1,
+  "platforms": ["macos-aarch64"],
+  "entry": "bin/zectrix-nas-gallery",
+  "capabilities": ["display", "keys"],
+  "description": "从已挂载的 NAS 照片目录随机显示人像，十六灰阶铺满、拍摄日期角标与小图缓存。",
+  "files": {}
+}
